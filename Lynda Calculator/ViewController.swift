@@ -12,6 +12,8 @@ enum modes {
     case not_set
     case addition
     case subtration
+    case multiply
+    case divide
 }
 
 
@@ -39,6 +41,13 @@ class ViewController: UIViewController {
     @IBAction func didPressSubtract(_ sender: Any) {
         changeMode(newMode: .subtration)
     }
+    @IBAction func didPressMultiply(_ sender: Any) {
+        changeMode(newMode: .multiply)
+    }
+    @IBAction func didPressDivide(_ sender: Any) {
+        changeMode(newMode: .divide)
+    }
+    
     @IBAction func didPressEquals(_ sender: Any) {
         guard let labelInt:Int = Int(labelString) else {
             return
@@ -51,6 +60,13 @@ class ViewController: UIViewController {
         } else if (currentMode == .subtration) {
             savedNum -= labelInt
         }
+        else if (currentMode == .multiply){
+            savedNum *= labelInt
+        }
+        else if (currentMode == .divide){
+            savedNum /= labelInt
+        }
+        
         currentMode = .not_set
         labelString = "\(savedNum)"
         updateText()
@@ -83,7 +99,11 @@ class ViewController: UIViewController {
             savedNum = labelInt
         }
         
-        label.text = "\(labelInt)"
+        let formatter:NumberFormatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        let num:NSNumber = NSNumber(value: labelInt)
+        
+        label.text = formatter.string(from: num)
     }
     
     func changeMode(newMode: modes){
